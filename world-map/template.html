@@ -1,0 +1,147 @@
+<title>魔女长篇 · 列国图</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap">
+<style>
+/* Layout: a staff-map sheet — the map plate on top, a legend ledger and a list of deviations from history below. */
+:root {
+  --paper: #f3f1ea; --ink: #23262b; --muted: #61656b; --rule: #cfccc2;
+  --sea: #dfe6ea; --grat: #c4d0d6; --coast: #fbfaf6;
+  --walde: #4f6b46; --strait: #b5884a; --wiran: #4f6d8f; --solmere: #3f7f86; --steppe: #7d6a8e;
+  --neutral: #cdbf94; --minor: #e4e0d4; --minor-edge: #b9b3a3;
+  --wiranCol: #a7b8cc; --solmereCol: #a5c6c8; --castaliaCol: #e3d9bb; --other: #ece9e1;
+  --label: #1d2024; --label-halo: rgba(243,241,234,.85); --mark: #9c2f2f;
+  --serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --sans: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #1b1d20; --ink: #e6e3da; --muted: #a3a29b; --rule: #393c41;
+  --sea: #232a31; --grat: #2f3943; --coast: #15171a;
+  --walde: #6f8f64; --strait: #c49a5d; --wiran: #6f8db0; --solmere: #5f9ea5; --steppe: #9884aa;
+  --neutral: #8f8462; --minor: #3a3c3f; --minor-edge: #55585c;
+  --wiranCol: #3f4f61; --solmereCol: #3c5658; --castaliaCol: #4a4537; --other: #2c2e31;
+  --label: #f2efe6; --label-halo: rgba(27,29,32,.85); --mark: #e06a5f; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #1b1d20; --ink: #e6e3da; --muted: #a3a29b; --rule: #393c41;
+  --sea: #232a31; --grat: #2f3943; --coast: #15171a;
+  --walde: #6f8f64; --strait: #c49a5d; --wiran: #6f8db0; --solmere: #5f9ea5; --steppe: #9884aa;
+  --neutral: #8f8462; --minor: #3a3c3f; --minor-edge: #55585c;
+  --wiranCol: #3f4f61; --solmereCol: #3c5658; --castaliaCol: #4a4537; --other: #2c2e31;
+  --label: #f2efe6; --label-halo: rgba(27,29,32,.85); --mark: #e06a5f; color-scheme: dark }
+body { background: var(--paper); color: var(--ink); font-family: var(--serif); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 48px; display: grid; gap: 22px; }
+header { display: grid; gap: 6px; }
+.eyebrow { font-family: var(--sans); font-size: 12px; letter-spacing: .14em; color: var(--muted); }
+h1 { margin: 0; font-size: clamp(24px, 4vw, 34px); font-weight: 700; text-wrap: balance; }
+.lede { margin: 0; color: var(--muted); max-width: 62ch; line-height: 1.7; }
+.plate { border: 1px solid var(--rule); background: var(--sea); overflow-x: auto; }
+.plate svg { display: block; width: 100%; min-width: 680px; height: auto; }
+.sea { fill: var(--sea); }
+.grat { fill: none; stroke: var(--grat); stroke-width: .6; }
+.land { stroke: var(--coast); stroke-width: .7; stroke-linejoin: round; }
+.st-walde { fill: var(--walde); } .st-strait { fill: var(--strait); } .st-wiran { fill: var(--wiran); }
+.st-solmere { fill: var(--solmere); } .st-steppe { fill: var(--steppe); }
+.st-castalia, .st-tisa { fill: var(--neutral); }
+.st-minor { fill: var(--minor); stroke: var(--minor-edge); stroke-width: .8; }
+.st-wiranCol { fill: var(--wiranCol); } .st-solmereCol { fill: var(--solmereCol); } .st-castaliaCol { fill: var(--castaliaCol); } .st-other { fill: var(--other); }
+.front { fill: none; stroke: var(--mark); stroke-width: 2.4; stroke-dasharray: 6 3; stroke-linecap: round; }
+svg text { font-family: var(--serif); fill: var(--label); paint-order: stroke; stroke: var(--label-halo); stroke-width: 3.5px; stroke-linejoin: round; }
+.big { font-size: 19px; font-weight: 700; letter-spacing: .08em; }
+.mid { font-size: 15px; font-weight: 600; }
+.sm { font-size: 11.5px; }
+.tag { font-family: var(--sans); font-size: 10px; letter-spacing: .1em; fill: var(--muted); }
+.col { font-size: 11px; fill: var(--muted); }
+.city { fill: var(--label); stroke: var(--label-halo); stroke-width: 1.5; } .city-l { font-size: 12px; }
+.ring { fill: none; stroke: var(--mark); stroke-width: 1.8; stroke-dasharray: 3 3; }
+.x { stroke: var(--mark); stroke-width: 3; fill: none; }
+.mark-l { font-size: 12.5px; font-weight: 700; fill: var(--mark); }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px 36px; }
+.cols > section { min-width: 0; }
+h2 { font-size: 16px; margin: 0 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--rule); }
+.legend { display: grid; gap: 14px; }
+.group h3 { font-family: var(--sans); font-size: 12px; letter-spacing: .12em; color: var(--muted); margin: 0 0 6px; font-weight: 600; }
+.group ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.group li { display: grid; grid-template-columns: 16px 1fr; gap: 10px; align-items: start; line-height: 1.5; }
+.sw { width: 16px; height: 16px; margin-top: 3px; border: 1px solid var(--rule); }
+.sw.line { height: 0; margin-top: 11px; border: 0; border-top: 2.4px dashed var(--mark); }
+.name { font-weight: 600; } .proto { color: var(--muted); font-size: 13px; }
+table.minors { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.minors td { padding: 4px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.minors td:first-child { font-weight: 600; white-space: nowrap; padding-right: 14px; }
+.minors td:last-child { color: var(--muted); }
+ol.dev { margin: 0; padding-left: 1.4em; display: grid; gap: 8px; line-height: 1.65; }
+ol.dev li::marker { color: var(--muted); font-family: var(--sans); font-size: 12px; }
+.dev b { font-weight: 600; }
+.note { font-family: var(--sans); font-size: 12.5px; color: var(--muted); line-height: 1.6; margin: 0; }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">魔女长篇 · 世界观附图 · 开战一年后（对应 1915 年春）</div>
+    <h1>列国图</h1>
+    <p class="lede">五个参战国：霍恩瓦尔德帝国与米克拉加德帝国一方，维兰共和国、索尔梅尔王国与斯捷普帝国一方。卡斯塔利亚与蒂萨利亚两个中等国家保持中立，其余小国未卷入战事。红色虚线为开战一年后的西线。</p>
+  </header>
+
+  <div class="plate"><!--SVG--></div>
+
+  <div class="cols">
+    <section>
+      <h2>图例</h2>
+      <div class="legend">
+        <div class="group"><h3>参战国 · 瓦尔德一方</h3><ul>
+          <li><span class="sw" style="background:var(--walde)"></span><span><span class="name">霍恩瓦尔德帝国</span><br><span class="proto">德意志帝国 + 奥地利 + 波希米亚</span></span></li>
+          <li><span class="sw" style="background:var(--strait)"></span><span><span class="name">米克拉加德帝国</span><br><span class="proto">原贝格兰的位置。拜占庭 + 奥斯曼：希腊本部、海峡与安纳托利亚；对手是斯捷普，以及维兰、索尔梅尔的海军与殖民地军队</span></span></li>
+        </ul></div>
+        <div class="group"><h3>参战国 · 联盟方</h3><ul>
+          <li><span class="sw" style="background:var(--wiran)"></span><span><span class="name">维兰共和国</span><br><span class="proto">法国，含比利牛斯山以南的加泰罗尼亚、阿拉贡与纳瓦拉，以及瓦隆</span></span></li>
+          <li><span class="sw" style="background:var(--solmere)"></span><span><span class="name">索尔梅尔王国</span><br><span class="proto">本岛与艾林岛（英伦三岛原型，海岸线已重绘）；另有冰岛、法罗与大陆上的佛兰德海岸</span></span></li>
+          <li><span class="sw" style="background:var(--steppe)"></span><span><span class="name">斯捷普帝国</span><br><span class="proto">俄国</span></span></li>
+        </ul></div>
+        <div class="group"><h3>中立国</h3><ul>
+          <li><span class="sw" style="background:var(--neutral)"></span><span><span class="name">卡斯塔利亚王国</span><br><span class="proto">意大利原型，半岛与岛屿已重绘；摇摆国</span></span></li>
+          <li><span class="sw" style="background:var(--neutral)"></span><span><span class="name">蒂萨利亚王国</span><br><span class="proto">匈牙利 + 塔特拉（摩拉维亚、斯洛伐克）+ 达基亚西部（特兰西瓦尼亚西半）+ 伏伊伏丁那北部</span></span></li>
+        </ul></div>
+        <div class="group"><h3>殖民地与其他</h3><ul>
+          <li><span class="sw" style="background:var(--wiranCol)"></span><span><span class="name">维兰殖民地</span><br><span class="proto">北非三地、黎凡特北部与奇里乞亚</span></span></li>
+          <li><span class="sw" style="background:var(--solmereCol)"></span><span><span class="name">索尔梅尔殖民地</span><br><span class="proto">埃及、黎凡特南部与两河</span></span></li>
+          <li><span class="sw" style="background:var(--castaliaCol)"></span><span><span class="name">卡斯塔利亚殖民地</span><br><span class="proto">利比亚</span></span></li>
+          <li><span class="sw line"></span><span><span class="name">西线</span><br><span class="proto">北起斯凯尔德边界，南抵高阿尔卑联邦</span></span></li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>中立小国（名称随机拟定）</h2>
+      <table class="minors">
+                <tr><td>斯凯尔德联省</td><td>荷兰 + 佛兰德内陆</td></tr>
+        <tr><td>约特王国</td><td>丹麦 + 石勒苏益格</td></tr>
+        <tr><td>北冠联合王国</td><td>挪威与瑞典仍是一个联合王国</td></tr>
+        <tr><td>泰拉公国</td><td>爱沙尼亚 + 拉脱维亚</td></tr>
+        <tr><td>高阿尔卑联邦</td><td>瑞士 + 萨伏依 + 奥斯塔谷</td></tr>
+        <tr><td>埃斯佩里亚王国</td><td>西班牙中南部</td></tr>
+        <tr><td>奥斯特拉王国</td><td>葡萄牙 + 加利西亚 + 莱昂西部</td></tr>
+                <tr><td>伊利里亚王国</td><td>克罗地亚 + 波黑</td></tr>
+        <tr><td>拉斯卡王国</td><td>塞尔维亚 + 黑山 + 北马其顿</td></tr>
+        <tr><td>达基亚王国</td><td>罗马尼亚东部与南部</td></tr>
+        <tr><td>默西亚王国</td><td>保加利亚</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>与真实 1915 年的主要不同</h2>
+      <ol class="dev">
+        <li><b>中欧不再有多民族大帝国。</b>瓦尔德只拿波希米亚与奥地利本部；蒂萨利亚中立，克罗地亚与波黑合为伊利里亚。</li>
+        <li><b>瓦尔德与米克拉加德陆上不接壤。</b>两者之间隔着中立的蒂萨利亚与巴尔干诸国，联系只能借道中立国或走黑海。</li>
+        <li><b>米克拉加德拥有全部希腊。</b>东南的奇里乞亚与两河上游归维兰殖民地，东北的卡尔斯一带归斯捷普，它因此三面受敌。</li>
+        <li><b>维兰跨过比利牛斯山。</b>加泰罗尼亚、阿拉贡北部与纳瓦拉属维兰，瓦隆也并入维兰。</li>
+        <li><b>索尔梅尔仍含艾林</b>，并在大陆上握有佛兰德海岸，北面另有冰岛与法罗。</li>
+        <li><b>斯捷普失去波罗的海南岸的两省</b>（泰拉公国），但仍保有芬兰与立陶宛。</li>
+        <li><b>瓦尔德取得伊斯特拉与南蒂罗尔</b>，在亚得里亚海北端有出海口；石勒苏益格则归约特王国。</li>
+        <li><b>三处海岸完全重绘。</b>卡斯塔利亚的半岛中部收窄成腰，南端展开成一大块陆地，被一道深湾分成两个岬角，东侧另伸出一条短臂，西面是一座新月形大岛；索尔梅尔本岛向西南伸出两条长爪，艾林是一座北面有深湾的圆岛；北非北岸原先向北鼓出的一大块陆地已断开，成为维兰殖民地的一座大岛，北岸有深湾、东北有钩状岬角；北非本土另有一个深入内陆的海湾和一只指向克里特的角。</li>
+        <li><b>另有几处小改动</b>：亚速海被填平，克里米亚与大陆相连；德意志湾向外推出；维兰大西洋岸与奥斯特拉西岸各多出一个海湾；北冠南部多出一道宽峡湾。</li>
+        <li><b>瑞士变成高阿尔卑联邦</b>，向西南扩至萨伏依与奥斯塔谷，西线南端止于它的边界。</li>
+      </ol>
+    </section>
+  </div>
+
+  <p class="note">国名、地名均为暂拟。叉号为本卷西线战场（阿图瓦原型）的大致位置，虚线圈为海峡。西线走向参照 1915 年春的实际战线，北端改在斯凯尔德边界。底图为 Natural Earth 1:5000 万现代国界（world-atlas 2.0.2），按小说设定重新划分；卡斯塔利亚、索尔梅尔与北非的海岸为重新绘制：先定大致轮廓，再生成一片虚拟地形，取它与海平面相交的等高线作为海岸。</p>
+</div>
